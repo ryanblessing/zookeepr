@@ -61,6 +61,13 @@ function filterByQuery(query, animalsArray) {
   }
 
 
+  function findById(id, animalsArray) {
+      const result = animalsArray.filter(animal => animal.id === id)[0];
+      return result;
+  }
+
+
+  const PORT = process.env.PORT || 3001;
 //route type for the const animals up top
 //--get requires 2 arguments 1. a string describing the route the client will fetch from
 //--the 2. callback function that will execute every time that round is accessed with a Get request
@@ -85,7 +92,16 @@ app.get('/api/animals', (req, res) => {
   res.json(results);
 });
 
+app.get('/api/animals/:id', (req, res) => {
+    const result = findById(req.params.id, animals);
+    if(result) {
+        res.json(result);
+    } else {
+        res.send(404);
+    }
+});
+
 //chain the listen command to make our server listen for request?-- run npm start to see it work in terminal
-app.listen(3001, () => {
-    console.log('API server now on port 3001!');
+app.listen(PORT, () => {
+    console.log(`API server now on port ${PORT}!`);
 });
