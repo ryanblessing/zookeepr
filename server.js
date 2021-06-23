@@ -4,20 +4,19 @@ const path = require('path');
 
 //set up just like inquirir :)
 const express = require('express');
+//parse incoming JSON data
+const { animals } = require('./DATA/animal.json');
+
 const PORT = process.env.PORT || 3001;
 // assign express() to a app so we can chain on methods to the express server
 const app = express();
 // parse incoming string or array data- 11.2
-app.use(express.urlencoded({
-    extended: true
-}));
-
-//parse incoming JSON data
+app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+// this app.use is for the css,js,images in public folder
+app.use(express.static('public'));
 
-const {
-    animals
-} = require('./DATA/animal.json');
+
 
 /*this function takes in req.query as a argument and filters through the animals accordingly,
  returning the new filtered array
@@ -166,6 +165,27 @@ app.post('/api/animals', (req, res) => {
     } 
 });
 
+//to create route for index.html
+// '/'---brings us to the root route of the server
+// * remember to kill server- save and then restart to ensure it is working
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, './public/index.html'));
+});
+
+//this takes us to just /animals
+app.get('/animals', (req, res) => {
+    res.sendFile(path.join(__dirname, './public/animals.html'));
+  });
+
+  //this get is to connect the zookepers.html page 
+  app.get('./zookeepers', (req, res) => {
+      res.sendFile(path.join(__dirname, './public/zookeeper.html'));
+  });
+
+  //wildcard route
+  app.get('*', (req, res) => {
+      res.sendFile(path.join(__dirname, './public.index.html'));
+  });
 //chain the listen command to make our server listen for request?-- run npm start to see it work in terminal
 app.listen(PORT, () => {
     console.log(`API server now on port ${PORT}!`);
