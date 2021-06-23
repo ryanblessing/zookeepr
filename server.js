@@ -4,6 +4,7 @@ const path = require('path');
 
 //set up just like inquirir :)
 const express = require('express');
+const PORT = process.env.PORT || 3001;
 // assign express() to a app so we can chain on methods to the express server
 const app = express();
 // parse incoming string or array data- 11.2
@@ -115,7 +116,7 @@ function validateAnimal(animal) {
 }
 
 
-const PORT = process.env.PORT || 3001;
+
 //route type for the const animals up top
 //--get requires 2 arguments 1. a string describing the route the client will fetch from
 //--the 2. callback function that will execute every time that round is accessed with a Get request
